@@ -9,8 +9,28 @@ function loadLog(sid) {
   try { return JSON.parse(localStorage.getItem(storeKey(sid))) || {}; }
   catch { return {}; }
 }
-function saveLog(sid, log) {
+function saveLog(sid, log, touch = true) {
+  if (touch) log._touched = Date.now();
   localStorage.setItem(storeKey(sid), JSON.stringify(log));
+}
+
+/* Pull a session's log from the repo on open, so any device shows what was
+   already synced. Rule: unsynced local edits always win on this device;
+   otherwise a newer remote export replaces local state. */
+async function pullSession(sid) {
+  if (!GH.configured() || !navigator.onLine) return;
+  let remote;
+  try {
+    remote = await GH.getFile(`data/workouts/w${PLAN.week}-${sid}.json`);
+  } catch { return; }
+  if (!remote || !remote.appState) return;
+  const local = loadLog(sid);
+  if ((local._touched || 0) > (local._synced || 0)) return; // local edits not yet synced
+  const remoteTime = Date.parse(remote.exportedAt) || 0;
+  if (remoteTime <= (local._synced || 0)) return; // nothing newer
+  const adopted = { ...remote.appState, _touched: 0, _synced: Date.now() };
+  localStorage.setItem(storeKey(sid), JSON.stringify(adopted));
+  if (sid === currentId) render();
 }
 
 /* ---------- state ---------- */
@@ -85,7 +105,7 @@ function renderTabs() {
     b.className = "tab" + (s.id === currentId ? " active" : "") + (s.date === today ? " today" : "");
     const d = new Date(s.date + "T12:00:00");
     b.textContent = d.toLocaleDateString("en-NZ", { weekday: "short" }) + " · " + shortName(s);
-    b.onclick = () => { currentId = s.id; render(); window.scrollTo(0, 0); };
+    b.onclick = () => { currentId = s.id; render(); window.scrollTo(0, 0); pullSession(s.id); };
     nav.appendChild(b);
   });
 }
@@ -372,7 +392,8 @@ function exportJSON() {
       };
     }),
     warmups: log.warmups || {},
-    exportedAt: new Date().toISOString()
+    exportedAt: new Date().toISOString(),
+    appState: { ...log } // app-internal: lets other devices restore exact UI state
   };
 }
 
@@ -388,6 +409,8 @@ async function finishSession() {
     try {
       await GH.putFile(`data/workouts/${base}.json`, JSON.stringify(exportJSON(), null, 2), `log: ${base}`);
       await GH.putFile(`logs/${base}.md`, md, `log (md): ${base}`);
+      log._synced = Date.now();
+      saveLog(currentId, log, false);
       btn.textContent = "Synced ✓";
       setTimeout(render, 1500);
       return;
@@ -508,5 +531,6 @@ function el(html) {
 }
 
 render();
+pullSession(currentId);
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");

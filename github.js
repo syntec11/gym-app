@@ -44,6 +44,28 @@ const GH = {
     return `✅ Connected — read/write access to ${c.owner}/${c.repo} confirmed.`;
   },
 
+  /* Read a JSON file from the data repo; null if absent or unreachable. */
+  async getFile(path) {
+    const c = this.cfg();
+    if (!this.configured()) return null;
+    const branch = c.branch || "main";
+    const res = await fetch(
+      `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path}?ref=${branch}`,
+      {
+        cache: "no-store",
+        headers: {
+          "Authorization": `Bearer ${c.token}`,
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    );
+    if (!res.ok) return null;
+    const j = await res.json();
+    const bytes = Uint8Array.from(atob(j.content.replace(/\s/g, "")), (ch) => ch.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  },
+
   async putFile(path, content, message) {
     const c = this.cfg();
     if (!this.configured()) throw new Error("GitHub sync not configured");
