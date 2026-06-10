@@ -17,6 +17,33 @@ const GH = {
     return !!(c && c.token && c.owner && c.repo);
   },
 
+  /* Diagnose config problems precisely: bad token vs invisible repo vs
+     read-only permission. GitHub returns 404 (not 403) when a token can't
+     see a private repo, so a plain error code is useless to the user. */
+  async test() {
+    const c = this.cfg();
+    if (!this.configured()) return "Fill in all three fields first.";
+    const headers = {
+      "Authorization": `Bearer ${c.token}`,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+    let res;
+    try {
+      res = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}`, { headers });
+    } catch {
+      return "Network error — no signal?";
+    }
+    if (res.status === 401) return "❌ Token rejected (401). It's invalid, expired, or pasted incompletely — it should start with github_pat_.";
+    if (res.status === 404) return `❌ Token can't see ${c.owner}/${c.repo} (404). Check: exact spelling of username + repo, AND that the token's "Repository access" is set to "Only select repositories" with ${c.repo} actually selected.`;
+    if (!res.ok) return `❌ GitHub returned ${res.status}.`;
+    const repo = await res.json();
+    if (!repo.permissions || !repo.permissions.push) {
+      return `⚠️ Token can SEE ${c.owner}/${c.repo} but can't write to it. Set the token's Contents permission to "Read and write".`;
+    }
+    return `✅ Connected — read/write access to ${c.owner}/${c.repo} confirmed.`;
+  },
+
   async putFile(path, content, message) {
     const c = this.cfg();
     if (!this.configured()) throw new Error("GitHub sync not configured");

@@ -471,18 +471,27 @@ function showSettings() {
          <input class="note-input gh-inp" id="gh-owner" placeholder="GitHub username" value="${c.owner || ""}">
          <input class="note-input gh-inp" id="gh-repo" placeholder="data repo name (e.g. gym-data)" value="${c.repo || ""}">
          <input class="note-input gh-inp" id="gh-token" type="password" placeholder="fine-grained personal access token" value="${c.token || ""}">
+         <div class="rpe-hint" id="gh-test-result"></div>
+         <button class="btn-done" id="gh-test">Test connection</button>
          <button class="btn-done" id="gh-save">Save</button>
          <button class="chip" id="close-btn">Close</button>
        </div>
      </div>`
   );
+  const saveFields = () => GH.save({
+    owner: overlay.querySelector("#gh-owner").value.trim(),
+    repo: overlay.querySelector("#gh-repo").value.trim(),
+    token: overlay.querySelector("#gh-token").value.trim(),
+    branch: "main"
+  });
+  overlay.querySelector("#gh-test").onclick = async () => {
+    saveFields();
+    const out = overlay.querySelector("#gh-test-result");
+    out.textContent = "Testing…";
+    out.textContent = await GH.test();
+  };
   overlay.querySelector("#gh-save").onclick = () => {
-    GH.save({
-      owner: overlay.querySelector("#gh-owner").value.trim(),
-      repo: overlay.querySelector("#gh-repo").value.trim(),
-      token: overlay.querySelector("#gh-token").value.trim(),
-      branch: "main"
-    });
+    saveFields();
     overlay.remove();
     render();
   };
