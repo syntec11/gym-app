@@ -33,12 +33,61 @@ async function pullSession(sid) {
   if (sid === currentId) render();
 }
 
+/* ---------- schedule overrides ----------
+   Moving a session is a first-class, logged act: the override (new date,
+   timestamp, reason) commits to data/schedule/wN.json immediately so the
+   accountability cron nags on the effective date, not the planned one. */
+
+const schedKey = `gymsched-w${PLAN.week}`;
+
+function loadSched() {
+  try { return JSON.parse(localStorage.getItem(schedKey)) || {}; }
+  catch { return {}; }
+}
+function saveSched(s) { localStorage.setItem(schedKey, JSON.stringify(s)); }
+
+function effectiveDate(s) {
+  const o = loadSched()[s.id];
+  return (o && o.date) || s.date;
+}
+
+async function pushSchedule() {
+  if (!GH.configured()) return false;
+  await GH.putFile(
+    `data/schedule/w${PLAN.week}.json`,
+    JSON.stringify(loadSched(), null, 2),
+    `schedule: w${PLAN.week} update`
+  );
+  return true;
+}
+
+async function pullSchedule() {
+  if (!GH.configured() || !navigator.onLine) return;
+  let remote;
+  try { remote = await GH.getFile(`data/schedule/w${PLAN.week}.json`); }
+  catch { return; }
+  if (!remote) return;
+  const local = loadSched();
+  let changed = false;
+  for (const [id, o] of Object.entries(remote)) {
+    if (!o || !o.date) continue;
+    if (!local[id] || (Date.parse(o.movedAt) || 0) > (Date.parse(local[id].movedAt) || 0)) {
+      local[id] = o;
+      changed = true;
+    }
+  }
+  if (changed) { saveSched(local); render(); }
+}
+
 /* ---------- state ---------- */
 
 function todaySessionId() {
   const today = new Date().toISOString().slice(0, 10);
-  const hit = PLAN.sessions.find(s => s.date === today);
-  return (hit || PLAN.sessions[0]).id;
+  const ordered = [...PLAN.sessions].sort((a, b) => effectiveDate(a).localeCompare(effectiveDate(b)));
+  const hit = ordered.find(s => effectiveDate(s) === today)
+    || ordered.find(s => effectiveDate(s) >= today)
+    || ordered[ordered.length - 1];
+  return hit.id;
 }
 
 let currentId = todaySessionId();
@@ -100,11 +149,14 @@ function renderTabs() {
   const today = new Date().toISOString().slice(0, 10);
   const nav = document.getElementById("session-tabs");
   nav.innerHTML = "";
-  PLAN.sessions.forEach(s => {
+  const ordered = [...PLAN.sessions].sort((a, b) => effectiveDate(a).localeCompare(effectiveDate(b)));
+  ordered.forEach(s => {
+    const eff = effectiveDate(s);
     const b = document.createElement("button");
-    b.className = "tab" + (s.id === currentId ? " active" : "") + (s.date === today ? " today" : "");
-    const d = new Date(s.date + "T12:00:00");
-    b.textContent = d.toLocaleDateString("en-NZ", { weekday: "short" }) + " · " + shortName(s);
+    b.className = "tab" + (s.id === currentId ? " active" : "") + (eff === today ? " today" : "");
+    const d = new Date(eff + "T12:00:00");
+    const moved = eff !== s.date ? " ↪" : "";
+    b.textContent = d.toLocaleDateString("en-NZ", { weekday: "short" }) + moved + " · " + shortName(s);
     b.onclick = () => { currentId = s.id; render(); window.scrollTo(0, 0); pullSession(s.id); };
     nav.appendChild(b);
   });
@@ -119,6 +171,8 @@ function renderSession() {
   const main = document.getElementById("app");
   main.innerHTML = "";
 
+  main.appendChild(moveBar(s));
+
   if (s.note) main.appendChild(el(`<div class="session-note">${s.note}</div>`));
 
   if (s.cueCard && PLAN.cueCards[s.cueCard]) {
@@ -130,6 +184,69 @@ function renderSession() {
   if (s.lowerWarmup) main.appendChild(warmupBlock(PLAN.lowerWarmup, "protocol"));
 
   s.exercises.forEach((ex, i) => main.appendChild(exerciseCard(ex, i)));
+}
+
+function moveBar(s) {
+  const eff = effectiveDate(s);
+  const o = loadSched()[s.id];
+  const fmt = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-NZ", { weekday: "short", day: "numeric", month: "short" });
+  const bar = el(
+    `<div class="move-bar">
+       <span class="move-info">${eff !== s.date
+         ? `↪ Moved to <b>${fmt(eff)}</b> (planned ${fmt(s.date)})${o && o.reason ? ` — ${o.reason}` : ""}`
+         : `Scheduled ${fmt(s.date)}`}</span>
+       <button class="chip">📅 Move</button>
+     </div>`
+  );
+  bar.querySelector(".chip").onclick = () => showMovePanel(s);
+  return bar;
+}
+
+function showMovePanel(s) {
+  const o = loadSched()[s.id];
+  const overlay = el(
+    `<div id="export-overlay">
+       <div class="panel">
+         <strong>Move ${shortName(s)}</strong>
+         <div class="rpe-hint">Rescheduling is logged to the repo with a timestamp — the accountability check follows the new date. Moving is fine; vanishing isn't.</div>
+         <input class="note-input gh-inp" id="mv-date" type="date" value="${effectiveDate(s)}">
+         <input class="note-input gh-inp" id="mv-reason" placeholder="why? (e.g. bad sleep, work ran late)" value="${(o && o.reason) || ""}">
+         <button class="btn-done" id="mv-save">Move it</button>
+         ${effectiveDate(s) !== s.date ? `<button class="btn-done" id="mv-revert">Revert to planned date</button>` : ""}
+         <button class="chip" id="close-btn">Close</button>
+       </div>
+     </div>`
+  );
+  const commit = async (sched) => {
+    saveSched(sched);
+    overlay.remove();
+    render();
+    try {
+      if (!(await pushSchedule())) alert("Saved on this device only — configure GitHub sync (⚙︎) so the accountability check sees it.");
+    } catch (err) {
+      alert(`Schedule saved locally but repo sync failed: ${err.message}\nIt will NOT be visible to the accountability check until a sync succeeds.`);
+    }
+  };
+  overlay.querySelector("#mv-save").onclick = () => {
+    const date = overlay.querySelector("#mv-date").value;
+    if (!date) return;
+    const sched = loadSched();
+    sched[s.id] = {
+      date,
+      plannedDate: s.date,
+      movedAt: new Date().toISOString(),
+      reason: overlay.querySelector("#mv-reason").value.trim() || undefined
+    };
+    commit(sched);
+  };
+  const revertBtn = overlay.querySelector("#mv-revert");
+  if (revertBtn) revertBtn.onclick = () => {
+    const sched = loadSched();
+    sched[s.id] = { date: s.date, plannedDate: s.date, movedAt: new Date().toISOString(), reason: "reverted to plan" };
+    commit(sched);
+  };
+  overlay.querySelector("#close-btn").onclick = () => overlay.remove();
+  document.body.appendChild(overlay);
 }
 
 function warmupBlock(wu, keyPrefix) {
@@ -367,6 +484,7 @@ function exportJSON() {
   return {
     date: new Date().toISOString().slice(0, 10),
     plannedDate: s.date,
+    effectiveDate: effectiveDate(s),
     sessionId: s.id,
     sessionName: s.name,
     week: PLAN.week,
@@ -532,5 +650,6 @@ function el(html) {
 
 render();
 pullSession(currentId);
+pullSchedule();
 
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");

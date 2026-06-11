@@ -53,6 +53,17 @@ nav#session-tabs::-webkit-scrollbar { display: none; }
 
 main { padding: 0 12px; }
 
+.move-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+.move-bar .move-info { font-size: 0.8em; color: var(--dim); }
+.move-bar .move-info b { color: var(--warn); }
+
 .session-note, .cue-card {
   background: var(--card);
   border-radius: var(--radius);
