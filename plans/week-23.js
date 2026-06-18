@@ -45,8 +45,7 @@ window.PLAN = {
         },
         { name: "DB Incline Press", weight: 35, unit: "kg", sets: 3, reps: 10 },
         { name: "Cable Face Pull", weight: 22.5, unit: "kg", sets: 3, reps: 12 },
-        { name: "DB Lateral Raise", weight: 6, unit: "kg/hand", sets: 3, reps: 12, note: "Slow eccentric." },
-        { name: "Plank", weight: "BW", sets: 3, reps: "hold", note: "Set 1 max (target 90s); 2 holds as long as form holds." }
+        { name: "DB Lateral Raise", weight: 6, unit: "kg/hand", sets: 3, reps: 12, note: "Slow eccentric." }
       ]
     },
     {
@@ -66,8 +65,7 @@ window.PLAN = {
         { name: "DB RDL", weight: 35, unit: "kg", sets: 3, reps: 10 },
         { name: "Leg Press", weight: 110, unit: "kg", sets: 3, reps: 10 },
         { name: "Lying Leg Curl", weight: 27, unit: "kg", sets: 3, reps: 10 },
-        { name: "Cable Pull-Through", weight: 41, unit: "kg", sets: 3, reps: 12 },
-        { name: "Dead Bug", weight: "BW", sets: 3, reps: "10/side" }
+        { name: "Cable Pull-Through", weight: 41, unit: "kg", sets: 3, reps: 12 }
       ]
     },
     {
@@ -104,8 +102,7 @@ window.PLAN = {
           note: "Tendon hold. No progression."
         },
         { name: "DB Lateral Raise", weight: 6, unit: "kg/hand", sets: 3, reps: 10 },
-        { name: "Cable Rear Delt Fly", weight: 14, unit: "kg", sets: 3, reps: 12 },
-        { name: "Plank", weight: "BW", sets: 3, reps: "hold", note: "Push for 90s on set 1." }
+        { name: "Cable Rear Delt Fly", weight: 14, unit: "kg", sets: 3, reps: 12 }
       ]
     },
     {
@@ -131,7 +128,6 @@ window.PLAN = {
         { name: "DB RDL", weight: 35, unit: "kg", sets: 2, reps: 10 },
         { name: "Cable Pull-Through", weight: 41, unit: "kg", sets: 2, reps: 12 },
         { name: "Calf Raise", weight: 10, unit: "kg/hand", sets: 3, reps: 12, note: "Watch left heel/Achilles." },
-        { name: "Dead Bug", weight: "BW", sets: 3, reps: "10/side" },
         { name: "Lying Knee Raise", weight: "BW", sets: 2, reps: 10 }
       ]
     },
