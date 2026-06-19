@@ -77,26 +77,37 @@ const GH = {
       "X-GitHub-Api-Version": "2022-11-28"
     };
 
-    // Existing file needs its sha for update; 404 means create.
-    let sha;
-    const head = await fetch(`${url}?ref=${branch}`, { headers });
-    if (head.ok) sha = (await head.json()).sha;
+    // Re-fetch the sha and PUT, retrying on 409/422 — two rapid writes to the
+    // same file (e.g. moving two sessions in a row) can race because the sha
+    // we read goes stale before the write lands. Re-read and try again.
+    let lastErr;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      let sha;
+      const head = await fetch(`${url}?ref=${branch}`, { headers, cache: "no-store" });
+      if (head.ok) sha = (await head.json()).sha; // else 404 = creating
 
-    const res = await fetch(url, {
-      method: "PUT",
-      headers,
-      body: JSON.stringify({
-        message,
-        content: ghB64(content),
-        branch,
-        ...(sha ? { sha } : {})
-      })
-    });
-    if (!res.ok) {
+      const res = await fetch(url, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          message,
+          content: ghB64(content),
+          branch,
+          ...(sha ? { sha } : {})
+        })
+      });
+      if (res.ok) return res.json();
+
       const body = await res.text();
+      // 409 conflict / 422 stale-sha → back off briefly and retry with fresh sha.
+      if ((res.status === 409 || res.status === 422) && attempt < 3) {
+        lastErr = `GitHub ${res.status}: ${body.slice(0, 120)}`;
+        await new Promise(r => setTimeout(r, 400 * (attempt + 1)));
+        continue;
+      }
       throw new Error(`GitHub ${res.status}: ${body.slice(0, 200)}`);
     }
-    return res.json();
+    throw new Error(lastErr || "GitHub put failed after retries");
   }
 };
 
