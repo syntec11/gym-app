@@ -5,6 +5,13 @@
 const PLAN = window.PLAN;
 const storeKey = (sid) => `gymlog-w${PLAN.week}-${sid}`;
 
+// Local calendar day (YYYY-MM-DD). NOT toISOString() — that's UTC, which reads
+// as "yesterday" all morning in NZ (UTC+12) and selects the wrong session.
+function localToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function loadLog(sid) {
   try { return JSON.parse(localStorage.getItem(storeKey(sid))) || {}; }
   catch { return {}; }
@@ -82,7 +89,7 @@ async function pullSchedule() {
 /* ---------- state ---------- */
 
 function todaySessionId() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localToday();
   const ordered = [...PLAN.sessions].sort((a, b) => effectiveDate(a).localeCompare(effectiveDate(b)));
   const hit = ordered.find(s => effectiveDate(s) === today)
     || ordered.find(s => effectiveDate(s) >= today)
@@ -146,7 +153,7 @@ function renderHeader() {
 }
 
 function renderTabs() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localToday();
   const nav = document.getElementById("session-tabs");
   nav.innerHTML = "";
   const ordered = [...PLAN.sessions].sort((a, b) => effectiveDate(a).localeCompare(effectiveDate(b)));
@@ -482,7 +489,7 @@ function sessionCompleted() {
 function exportJSON() {
   const s = session();
   return {
-    date: new Date().toISOString().slice(0, 10),
+    date: localToday(),
     plannedDate: s.date,
     effectiveDate: effectiveDate(s),
     sessionId: s.id,
@@ -544,7 +551,7 @@ function exportMarkdown() {
   const s = session();
   const lines = [];
   lines.push(`# W${PLAN.week} Log — ${s.name}`);
-  lines.push(`**Date:** ${s.date}${s.date === new Date().toISOString().slice(0,10) ? "" : ` (logged ${new Date().toISOString().slice(0,10)})`}`);
+  lines.push(`**Date:** ${s.date}${s.date === localToday() ? "" : ` (logged ${localToday()})`}`);
   lines.push("");
   const missing = [];
 

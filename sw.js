@@ -1,6 +1,6 @@
 /* Network-first with cache fallback: always fresh when online,
    full app shell available offline at the gym. */
-const CACHE = "gym-app-v9";
+const CACHE = "gym-app-v10";
 const ASSETS = ["./", "index.html", "style.css", "app.js", "github.js", "plans/week-25.js", "manifest.json"];
 
 self.addEventListener("install", (e) => {
