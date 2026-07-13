@@ -1,4 +1,5 @@
-const PLAN = {
+window.PLAN =
+{
   "week": 27,
   "phase": "Phase 3, Block 3, Week 2: Reconciliation + Form-Gated Progression",
   "theme": "Reconcile prescription with actual execution. Hold squat at 62.5kg pending physio clearance; own the unplanned 75kg deadlift; progress only lat pulldown. Tendon rehabilitation remains load-gated.",
