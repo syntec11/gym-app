@@ -1,7 +1,7 @@
 /* Network-first with cache fallback: always fresh when online,
    full app shell available offline at the gym. */
-const CACHE = "gym-app-v15";
-const ASSETS = ["./", "index.html", "style.css", "app.js", "github.js", "plans/week-34.js?v=34", "manifest.json"];
+const CACHE = "gym-app-v17";
+const ASSETS = ["./", "index.html", "style.css", "app.js", "github.js", "plans/week-35.js?v=35a", "manifest.json"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
