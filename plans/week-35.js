@@ -1,39 +1,38 @@
 window.PLAN = {
   "week": 35,
   "phase": "Bounded Gym Re-entry",
-  "theme": "Monday: one easy lower-body exposure. Thursday and Saturday remain provisional, pending immediate and delayed response. No catch-up work; clinician advice overrides this plan.",
+  "theme": "Monday: bounded HOME lower-body exposure, replacing the gym session because of weather. Thursday and Saturday remain provisional pending response. No catch-up work; clinician advice overrides this plan.",
   "cueCards": {},
   "sessions": [
     {
       "id": "bounded-lower-a",
       "date": "2026-09-07",
-      "name": "Bounded Gym — Lower-Body Re-entry",
-      "note": "Up to FOUR working sets only. Aim for easy effort; RPE 5–6 is a ceiling, not a target. Leave at least four reps in reserve. Loads are provisional: reduce or stop if warm-ups feel disproportionately expensive. Rest 2–3 minutes, breathe normally, no grinding or breath-holding. Walking commute counts toward the total dose; go slowly. No upper-body/grip-intensive work, circuits, supersets, finishers or bonus work. Do not start during AF symptoms or against clinician advice. Stop for palpitations/irregular racing heartbeat, chest pain/pressure, dizziness, unusual breathlessness, marked exercise intolerance or meaningful cough increase. Seek medical advice for recurrent rhythm symptoms; severe symptoms warrant 111. Stopping early with a note is appropriate, not failure.",
+      "name": "Bounded Home — Lower-Body Re-entry",
+      "note": "HOME SUBSTITUTE: up to FOUR working sets only. Warm up with a few minutes of easy indoor movement, 5 unweighted chair squats and 5 gentle glute bridges. Bodyweight is the default. Aim for easy effort; RPE 5–6 is a ceiling, not a target. Rest 2–3 minutes between sets and exercises. Normal breathing, no straining or breath-holding. No circuits, bonus sets, kettlebell, 20kg vest or band today. Stop early or reduce reps if effort is disproportionate. Do not start during AF symptoms or against clinician advice. Stop for palpitations/irregular racing heartbeat, chest discomfort, dizziness, unusual breathlessness or meaningful cough increase. Seek medical advice for recurrent rhythm symptoms; severe symptoms warrant 111. Record the immediate response and review again tomorrow. Thursday and Saturday remain provisional. Chair squat: stable chair against a wall, controlled sit and smooth stand. Optional 10kg vest only after clearly easy unweighted warm-up, with unrestricted breathing and comfortable forearms; record use in notes. Bridge: bodyweight only, no lower-back arch or forceful hand pressure. RPE below 6: record actual effort in a note; do not increase effort to match the buttons.",
       "exercises": [
         {
-          "name": "Leg Press",
-          "weight": 90,
+          "name": "Chair Squat / Sit-to-Stand",
+          "weight": "BW",
           "sets": 2,
           "reps": 8,
-          "unit": "kg",
+          "unit": null,
           "warmup": [
-            "50kg × 8",
-            "70kg × 5"
+            "5 easy bodyweight reps; stable chair against a wall"
           ],
           "rpe": true,
-          "note": "Provisional load. Controlled easy reps; lower the weight or stop if effort is disproportionate. Record actual load, reps, RPE and any events in set notes."
+          "note": "Bodyweight default. Optional 10kg vest only if warm-up clearly easy, breathing unrestricted and donning it does not aggravate forearms. Sit under control and stand smoothly; no bouncing or breath-holding. Record any vest use and actual effort in set notes."
         },
         {
-          "name": "Lying Leg Curl",
-          "weight": 27,
+          "name": "Glute Bridge",
+          "weight": "BW",
           "sets": 2,
           "reps": 8,
-          "unit": "kg",
+          "unit": null,
           "warmup": [
-            "18kg × 8"
+            "5 gentle bodyweight reps"
           ],
           "rpe": true,
-          "note": "Provisional load. Smooth reps, normal breathing, no straining. Record actual load/reps and any symptoms or forearm discomfort."
+          "note": "Feet planted; lift hips without arching the lower back, pause briefly, lower under control. Arms relaxed; no forceful hand pressure. Bodyweight only."
         },
         {
           "name": "Immediate Response Recorded",
@@ -41,7 +40,7 @@ window.PLAN = {
           "sets": 1,
           "reps": "checked",
           "unit": null,
-          "note": "Use the set note: overall effort; heart rhythm/palpitations; cough/chest sensations; dizziness/breathlessness; energy; forearms; any stop or load reduction; walking commute and response afterward. Append events as they occur."
+          "note": "Record effort, rhythm/palpitations, cough/chest sensations, dizziness/breathlessness, energy, forearms and any load/reps modification. Home session replaces the machine workout; no walking commute today."
         },
         {
           "name": "Delayed Response Recorded",
