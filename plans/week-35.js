@@ -1,7 +1,7 @@
 window.PLAN = {
   "week": 35,
   "phase": "Bounded Gym Re-entry",
-  "theme": "Monday: bounded HOME lower-body exposure, replacing the gym session because of weather. Thursday and Saturday remain provisional pending response. No catch-up work; clinician advice overrides this plan.",
+  "theme": "Bounded re-entry: Monday home lower-body exposure; Thursday 10 September small gym lower-body test. Saturday remains provisional pending immediate and next-day response. No catch-up work; clinician advice overrides.",
   "cueCards": {},
   "sessions": [
     {
@@ -49,6 +49,55 @@ window.PLAN = {
           "reps": "reviewed",
           "unit": null,
           "note": "Leave unchecked until reviewed tomorrow. Append energy, cough/chest/heart symptoms, sleep, leg soreness versus systemic fatigue, forearms and tracker trends. Note any later response over 24–48 hours before deciding Thursday."
+        }
+      ]
+    },
+    {
+      "id": "bounded-lower-b",
+      "date": "2026-09-10",
+      "name": "Bounded Gym — Lower-Body Tolerance Test",
+      "note": "Up to FOUR working sets only. Leg press warm-up: 50 kg x 8, then 70 kg x 5 if clearly comfortable; working ceiling 90 kg, 2 x 8. Lying leg curl warm-up: 18 kg x 8; working ceiling 27 kg, 2 x 8. Reduce load/reps or stop early if needed. RPE 5–6 is a CEILING, not a target; leave at least four reps in reserve. Rest 2–3 minutes between sets and exercises. Breathe normally; no straining or breath-holding. No upper-body/grip-intensive work, circuits, supersets, bonus sets or added cardio. Walking to/from the gym counts toward total load: easy conversational pace, no pace targets. If the commute or warm-up feels unusually costly, shorten or omit the machine work. Do not start with fever, active rhythm symptoms or contrary clinician advice. Stop for chest discomfort, palpitations/irregular racing heartbeat, dizziness, unusual breathlessness, meaningful cough increase or forearm pain. Seek medical advice for recurrent rhythm symptoms; severe chest pain, fainting or severe breathlessness warrants 111. Record immediate response, then review tomorrow before deciding Saturday. RPE below 6: enter actual effort in a note, not extra effort to match app buttons.",
+      "exercises": [
+        {
+          "name": "Leg Press",
+          "weight": 90,
+          "sets": 2,
+          "reps": 8,
+          "unit": "kg",
+          "warmup": [
+            "50 kg x 8",
+            "70 kg x 5 if clearly comfortable"
+          ],
+          "rpe": true,
+          "note": "Maximum prescribed load, not compulsory. Reduce if needed; normal breathing, no grinding."
+        },
+        {
+          "name": "Lying Leg Curl",
+          "weight": 27,
+          "sets": 2,
+          "reps": 8,
+          "unit": "kg",
+          "warmup": [
+            "18 kg x 8"
+          ],
+          "rpe": true,
+          "note": "Maximum prescribed load; reduce if needed. Avoid forceful gripping of handles."
+        },
+        {
+          "name": "Immediate Response Recorded",
+          "weight": "notes",
+          "sets": 1,
+          "reps": "checked",
+          "unit": null,
+          "note": "Record actual effort, cough, rhythm/chest symptoms, dizziness/breathlessness, energy, forearms and walking-commute response."
+        },
+        {
+          "name": "Delayed Response Recorded",
+          "weight": "notes",
+          "sets": 1,
+          "reps": "reviewed",
+          "unit": null,
+          "note": "Leave unchecked until tomorrow: energy, sleep, cough/heart symptoms, soreness versus systemic fatigue, forearms and recovery trends. Saturday is not yet prescribed."
         }
       ]
     }
