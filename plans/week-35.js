@@ -1,7 +1,7 @@
 window.PLAN = {
   "week": 35,
   "phase": "Bounded Gym Re-entry",
-  "theme": "Bounded re-entry: Monday home lower-body exposure; Thursday 10 September small gym lower-body test. Saturday remains provisional pending immediate and next-day response. No catch-up work; clinician advice overrides.",
+  "theme": "Bounded re-entry: Monday home lower-body exposure; Thursday home substitution due to rain, using bodyweight squats and single-leg bridges. Saturday remains provisional pending response. No catch-up work; clinician advice overrides.",
   "cueCards": {},
   "sessions": [
     {
@@ -55,33 +55,34 @@ window.PLAN = {
     {
       "id": "bounded-lower-b",
       "date": "2026-09-10",
-      "name": "Bounded Gym — Lower-Body Tolerance Test",
-      "note": "Up to FOUR working sets only. Leg press warm-up: 50 kg x 8, then 70 kg x 5 if clearly comfortable; working ceiling 90 kg, 2 x 8. Lying leg curl warm-up: 18 kg x 8; working ceiling 27 kg, 2 x 8. Reduce load/reps or stop early if needed. RPE 5–6 is a CEILING, not a target; leave at least four reps in reserve. Rest 2–3 minutes between sets and exercises. Breathe normally; no straining or breath-holding. No upper-body/grip-intensive work, circuits, supersets, bonus sets or added cardio. Walking to/from the gym counts toward total load: easy conversational pace, no pace targets. If the commute or warm-up feels unusually costly, shorten or omit the machine work. Do not start with fever, active rhythm symptoms or contrary clinician advice. Stop for chest discomfort, palpitations/irregular racing heartbeat, dizziness, unusual breathlessness, meaningful cough increase or forearm pain. Seek medical advice for recurrent rhythm symptoms; severe chest pain, fainting or severe breathlessness warrants 111. Record immediate response, then review tomorrow before deciding Saturday. RPE below 6: enter actual effort in a note, not extra effort to match app buttons.",
+      "name": "Bounded Home — Squats and Single-Leg Bridges",
+      "note": "HOME REPLACEMENT for Thursday gym session due to rain, not an extra workout. Bodyweight only. Warm up with 3–5 minutes easy indoor movement, 5 comfortable shallow squats and 5 two-leg glute bridges; then try 2 easy single-leg bridge reps per side. Squats: 2 x 8, comfortable depth, feet planted, knees follow toes, smooth descent and rise; stable chair behind you as a safety/depth reference if useful. Single-leg glute bridge: 2 rounds of 6 reps PER SIDE; both sides make one round, not extra bonus sets. Rest between sides as needed and 2–3 minutes between rounds/exercises. RPE 5–6 is a CEILING, not a target; stop with at least four clean reps in reserve. No vest, weights, band, circuits, supersets, bonus sets or compensatory cardio. Normal breathing throughout; exhale as you rise, no straining or breath-holding. Bridge: ribs down, pelvis level, push through planted foot, lift only as high as possible without arching or twisting; arms relaxed, no forceful hand pressure. If single-leg work cramps, strains or exceeds the effort ceiling, substitute two-leg bridges, 2 x 8 TOTAL for the exercise, counting work already done rather than restarting. Reduce squat depth/reps or return to chair sit-to-stands if needed. Do not start with fever, active rhythm symptoms, new concerning symptoms or contrary clinician advice. Stop for chest discomfort, palpitations/irregular racing heartbeat, dizziness, unusual breathlessness, meaningful cough increase or forearm pain. Seek medical advice for recurrent rhythm symptoms; severe chest pain, fainting or severe breathlessness warrants 111. Record immediate response and review tomorrow before deciding Saturday. RPE below 6: record actual effort in notes; do not increase effort to match app buttons.",
       "exercises": [
         {
-          "name": "Leg Press",
-          "weight": 90,
+          "name": "Bodyweight Squat",
+          "weight": "BW",
           "sets": 2,
           "reps": 8,
-          "unit": "kg",
+          "unit": null,
           "warmup": [
-            "50 kg x 8",
-            "70 kg x 5 if clearly comfortable"
+            "3–5 minutes easy indoor movement",
+            "5 comfortable shallow bodyweight squats"
           ],
           "rpe": true,
-          "note": "Maximum prescribed load, not compulsory. Reduce if needed; normal breathing, no grinding."
+          "note": "Comfortable depth, feet planted, knees track toes; normal controlled tempo, no long holds. Chair behind as backup if useful. Reduce depth/reps or use sit-to-stands if effort exceeds RPE 5–6."
         },
         {
-          "name": "Lying Leg Curl",
-          "weight": 27,
+          "name": "Single-Leg Glute Bridge",
+          "weight": "BW",
           "sets": 2,
-          "reps": 8,
-          "unit": "kg",
+          "reps": "6/side",
+          "unit": null,
           "warmup": [
-            "18 kg x 8"
+            "5 easy two-leg bridges",
+            "2 easy single-leg trial reps per side"
           ],
           "rpe": true,
-          "note": "Maximum prescribed load; reduce if needed. Avoid forceful gripping of handles."
+          "note": "Each logged set is one round of BOTH sides. Rest between sides if needed. Pelvis level, ribs down, no back arch or forceful hand pressure. If cramping/strain or effort too high, use two-leg bridges 2 x 8 total, counting work already done."
         },
         {
           "name": "Immediate Response Recorded",
@@ -89,7 +90,7 @@ window.PLAN = {
           "sets": 1,
           "reps": "checked",
           "unit": null,
-          "note": "Record actual effort, cough, rhythm/chest symptoms, dizziness/breathlessness, energy, forearms and walking-commute response."
+          "note": "Record actual effort, repetitions/substitutions, cough, rhythm/chest symptoms, dizziness/breathlessness, energy, forearms and leg response. No gym commute today."
         },
         {
           "name": "Delayed Response Recorded",
