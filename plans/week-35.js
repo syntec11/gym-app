@@ -1,7 +1,7 @@
 window.PLAN = {
   "week": 35,
   "phase": "Bounded Gym Re-entry",
-  "theme": "Bounded re-entry: Monday home lower-body exposure; Thursday home substitution due to rain, using bodyweight squats and single-leg bridges. Saturday remains provisional pending response. No catch-up work; clinician advice overrides.",
+  "theme": "Bounded re-entry: Monday and Thursday home lower-body sessions; Saturday easy gym machines following reported smooth Thursday tolerance. Four working sets only; no catch-up work; clinician advice overrides.",
   "cueCards": {},
   "sessions": [
     {
@@ -99,6 +99,53 @@ window.PLAN = {
           "reps": "reviewed",
           "unit": null,
           "note": "Leave unchecked until tomorrow: energy, sleep, cough/heart symptoms, soreness versus systemic fatigue, forearms and recovery trends. Saturday is not yet prescribed."
+        }
+      ]
+    },
+    {
+      "id": "bounded-lower-c",
+      "date": "2026-09-12",
+      "name": "Bounded Gym — Leg Press and Leg Curl",
+      "note": "FOUR working sets only: leg press 2 x 8 and seated OR lying leg curl 2 x 8. The progression is returning to the gym and easy machine resistance, not extra volume. Warm up with a few minutes of easy movement and one light familiarisation set per machine. Select a light load from today’s warm-up, not historical numbers; record actual kg. RPE 5–6 is a CEILING, not a target; leave at least four clean reps in reserve. Rest 2–3 minutes between working sets. Leg press: comfortable depth, no bracing strain or breath-holding. Leg curl: controlled reps; choose the machine that does not require uncomfortable forearm gripping. Breathe normally throughout. No circuits, finishers, bonus exercises or compensatory cardio. If walking to/from the gym, count the commute as part of today’s dose and take the final hills gently. If warm-up feels unexpectedly demanding, reduce load or stop. Clinician instructions override; this is not medical clearance. Do not start with active rhythm symptoms or new concerning symptoms. Stop for palpitations, chest discomfort, dizziness, unusual breathlessness, meaningful cough increase or forearm pain. Seek medical advice for recurrent rhythm symptoms; severe chest pain, fainting or severe breathlessness warrants 111. Record immediate response and review energy, cough/rhythm symptoms, leg soreness versus systemic fatigue and tracker trends tomorrow and over 24–48 hours. RPE below 6: record actual effort in notes; do not increase effort to match the app buttons.",
+      "exercises": [
+        {
+          "name": "Leg Press",
+          "weight": "Light — select at warm-up",
+          "sets": 2,
+          "reps": 8,
+          "unit": "kg",
+          "warmup": [
+            "A few minutes easy movement",
+            "1 light familiarisation set; comfortable depth, normal breathing"
+          ],
+          "rpe": true
+        },
+        {
+          "name": "Seated / Lying Leg Curl",
+          "weight": "Light — select at warm-up",
+          "sets": 2,
+          "reps": 8,
+          "unit": "kg",
+          "warmup": [
+            "1 light familiarisation set; choose forearm-comfortable machine"
+          ],
+          "rpe": true
+        },
+        {
+          "name": "Immediate Response Recorded",
+          "weight": "notes",
+          "sets": 1,
+          "reps": "checked",
+          "unit": null,
+          "note": "Record actual loads/effort, symptoms, energy, forearms and walking commute."
+        },
+        {
+          "name": "Delayed Response Recorded",
+          "weight": "notes",
+          "sets": 1,
+          "reps": "reviewed",
+          "unit": null,
+          "note": "Leave unchecked until tomorrow. Review energy, cough/rhythm symptoms, sleep and soreness versus systemic fatigue; note later response over 24–48 hours."
         }
       ]
     }
